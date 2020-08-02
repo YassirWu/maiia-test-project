@@ -10,8 +10,6 @@ import ShoppingCartDetail from 'components/ShoppingCartDetail';
 import Cart from 'model/Cart';
 import ListProducts from './ListProducts';
 
-
-
 type HomePageProps = {
   carts: Cart[];
   totalShoppingCart: number;

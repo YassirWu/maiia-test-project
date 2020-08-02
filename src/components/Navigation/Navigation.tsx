@@ -11,6 +11,13 @@ const useStyle = makeStyles({
   },
   shoppingCartTotal: {
     fontWeight: 'bold',
+  },
+  collapse: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  inputSearch: {
+    marginRight: '15px',
   }
 })
 
@@ -32,7 +39,7 @@ const Navigation: React.FunctionComponent<NotificationProps> = ({
     <Navbar className={classes.root} expand="lg">
       <Navbar.Brand>Product Website</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
+      <Navbar.Collapse id="basic-navbar-nav" className={classes.collapse}>
         <Navbar.Text>
           <Button onClick={onClickShoppingCart} variant="light">
             Shopping cart: <span className={classes.shoppingCartTotal}>{totalShoppingCart}</span>
@@ -42,7 +49,7 @@ const Navigation: React.FunctionComponent<NotificationProps> = ({
           e.preventDefault();
           searchByName(search);
         }}>
-          <Form.Control type="text" placeholder="Search by name" value={search} onChange={e => setSearch(e.target.value)} />
+          <Form.Control type="text" placeholder="Search by name" value={search} onChange={e => setSearch(e.target.value)} className={classes.inputSearch} />
           <Button variant="primary" type="submit">Search</Button>
         </Form>
       </Navbar.Collapse>
