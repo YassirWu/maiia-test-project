@@ -1,11 +1,4 @@
 import * as React from 'react';
-import useSWR from 'swr';
-import { getProductsApi } from 'utils/typicodeApi';
-import { makeStyles } from '@material-ui/styles';
-import CustomPagination from 'components/CustomPagination';
-import ItemProduct from 'components/ItemProduct';
-import Loader from 'components/Loader';
-import ListProduct from 'components/ListProduct';
 import Product from 'model/Product';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -15,15 +8,9 @@ import { getTotalShoppingCart, getShoppingCarts } from 'store/shoppingCart/selec
 import Navigation from 'components/Navigation';
 import ShoppingCartDetail from 'components/ShoppingCartDetail';
 import Cart from 'model/Cart';
+import ListProducts from './ListProducts';
 
-const useStyle = makeStyles({
-  listProduct: {
-    marginBottom: '20px',
-  },
-  pagination: {
-    textAlign: 'center',
-  },
-});
+
 
 type HomePageProps = {
   carts: Cart[];
@@ -38,39 +25,26 @@ export const HomePage: React.FunctionComponent<HomePageProps> = ({
   onAddProductToShoppingCart,
   onRemoveProductFromShoppingCart,
 }) => {
+  const [search, setSearch] = React.useState<string | undefined>(undefined);
   const [page, setPage] = React.useState(1);
   const [showShoppingCart, setShowShoppingCart] = React.useState(false);
-  const { data, error } = useSWR(['/photos', page], (url, page) => getProductsApi(page));
-  const classes = useStyle();
-
-  if (error) return <p>error</p>;
-  if (!data) return <Loader />;
 
   return (
     <>
       <Navigation
         totalShoppingCart={totalShoppingCart}
         onClickShoppingCart={() => setShowShoppingCart(true)}
+        searchByName={(value) => {
+          setSearch(value);
+          setPage(1);
+        }}
       />
-      <div className={classes.listProduct}>
-        <ListProduct>
-          {data.products.map(product => (
-            <ItemProduct
-              key={product.id}
-              product={product}
-              onAddProductToShoppingCart={() => onAddProductToShoppingCart(product)}
-            />
-          ))}
-        </ListProduct>
-      </div>
-      <div className={classes.pagination}>
-        <CustomPagination
-          numberTotalElement={data.total}
-          numberPerPage={15}
-          currentPage={page}
-          onChange={setPage}
-        />
-      </div>
+      <ListProducts
+        search={search}
+        onAddProductToShoppingCart={onAddProductToShoppingCart}
+        page={page}
+        setPage={setPage}
+      />
       <ShoppingCartDetail
         carts={carts}
         total={totalShoppingCart}

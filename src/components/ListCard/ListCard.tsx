@@ -2,7 +2,7 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const ListProduct: React.FunctionComponent<{}> = ({ children }) => {
+const ListCard: React.FunctionComponent<{}> = ({ children }) => {
   return (
     <Row>
       {React.Children.map(children, child => (
@@ -14,4 +14,4 @@ const ListProduct: React.FunctionComponent<{}> = ({ children }) => {
   )
 }
 
-export default ListProduct;
+export default ListCard;

@@ -12,11 +12,12 @@ type GetProductsResponse = {
   total: number;
 }
 
-export const getProductsApi = async (page = 0): Promise<GetProductsResponse> => {
+export const getProductsApi = async (page = 0, search?: string): Promise<GetProductsResponse> => {
   const response = await client.get<Product[]>('photos', {
     params: {
       _page: page,
       _limit: 15,
+      title_like:search
     }
   });
   
