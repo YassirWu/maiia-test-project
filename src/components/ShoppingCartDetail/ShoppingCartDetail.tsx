@@ -8,7 +8,7 @@ import Product from 'model/Product';
 const useStyle = makeStyles({
   title: {
     marginBottom: '20px',
-  }
+  },
 })
 
 type ShoppingCartDetailProps = {
@@ -32,7 +32,7 @@ const ShoppingCartDetail: React.FunctionComponent<ShoppingCartDetailProps> = ({
 
   return (
     <CustomModal title="Shopping Cart" show={show} onHideModal={onHideModal}>
-      <h5 className={classes.title}>Your shopping cart</h5>
+      <h5 className={classes.title}>Your shopping cart { total ? <span>({total})</span> : ''}</h5>
       {total === 0 ? (
         <p>You have no product on shopping cart</p>
       ) : (
