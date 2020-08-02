@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Product from 'model/Product';
+import { LIMIT_PRODUCT_PER_PAGE } from './constants';
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
@@ -16,7 +17,7 @@ export const getProductsApi = async (page = 0, search?: string): Promise<GetProd
   const response = await client.get<Product[]>('photos', {
     params: {
       _page: page,
-      _limit: 15,
+      _limit: LIMIT_PRODUCT_PER_PAGE,
       title_like:search
     }
   });

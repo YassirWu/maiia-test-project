@@ -7,6 +7,7 @@ import ItemProduct from 'components/ItemProduct';
 import Loader from 'components/Loader';
 import ListCard from 'components/ListCard';
 import Product from 'model/Product';
+import { LIMIT_PRODUCT_PER_PAGE } from 'utils/constants';
 
 const useStyle = makeStyles({
   listProduct: {
@@ -54,7 +55,7 @@ const ListProducts: React.FunctionComponent<ListProductsProps> = ({
         <div className={classes.pagination}>
           <CustomPagination
             numberTotalElement={data.total}
-            numberPerPage={15}
+            numberPerPage={LIMIT_PRODUCT_PER_PAGE}
             currentPage={page}
             onChange={setPage}
           />
