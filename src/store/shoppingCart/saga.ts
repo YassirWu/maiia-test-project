@@ -1,5 +1,5 @@
 import { takeEvery, select, put } from "redux-saga/effects";
-import { addToShoppingCartRoutine } from "./routines";
+import { addToShoppingCartRoutine, removeFromShoppingCartRoutine } from "./routines";
 import Product from "model/Product";
 import { Action } from "redux";
 import { getShoppingCarts } from "./selectors";
@@ -32,6 +32,37 @@ function* addToShoppingCart(action: ActionPayload<Product>) {
   }
 }
 
+function* removeFromShoppingCart(action: ActionPayload<Product>) {
+  const product: Product = {...action.payload}
+  const state = yield select();
+  const carts = getShoppingCarts(state);
+
+  const newCarts = carts.reduce<Cart[]>((results, cart) => {
+    if (product.id === cart.product.id) {
+      const quantity = cart.quantity - 1;
+      if(quantity === 0) {
+        return results;
+      }
+
+      return [
+        ...results,
+        {
+          ...cart,
+          quantity,
+        },
+      ]
+    }
+
+    return [
+      ...results,
+      {...cart},
+    ]
+  }, []);
+
+  yield put(removeFromShoppingCartRoutine.success(newCarts));
+}
+
 export function* shoppingCartSaga() {
   yield takeEvery(addToShoppingCartRoutine.REQUEST, addToShoppingCart);
+  yield takeEvery(removeFromShoppingCartRoutine.REQUEST, removeFromShoppingCart);
 }

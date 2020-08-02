@@ -1,5 +1,5 @@
 import { Action } from "redux"
-import { addToShoppingCartRoutine } from "./routines";
+import { addToShoppingCartRoutine, removeFromShoppingCartRoutine } from "./routines";
 import Cart from "model/Cart";
 
 type ShoppingCartState = {
@@ -17,6 +17,7 @@ type Actions = Action | AddToShoppingCartAction;
 const reducer = (state = initialState, action: Actions): ShoppingCartState => {
   switch (action.type) {
     case addToShoppingCartRoutine.SUCCESS:
+    case removeFromShoppingCartRoutine.SUCCESS:
       return {
         ...state,
         carts: (action as AddToShoppingCartAction).payload,

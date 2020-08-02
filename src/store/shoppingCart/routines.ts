@@ -7,3 +7,9 @@ export const addToShoppingCartRoutine = createRoutine(PREFIX_TYPE_ADD_SHOPPING_C
   request: (product: Product) => product,
   success: (carts: Cart[]) => carts,
 });
+
+const PREFIX_TYPE_REMOVE_SHOPPING_CART = 'REMOVE_SHOPPING_CART';
+export const removeFromShoppingCartRoutine = createRoutine(PREFIX_TYPE_REMOVE_SHOPPING_CART, {
+  request: (product: Product) => product,
+  success: (carts: Cart[]) => carts,
+});
