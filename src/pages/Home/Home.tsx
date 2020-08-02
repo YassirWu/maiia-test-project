@@ -6,6 +6,13 @@ import CustomPagination from 'components/CustomPagination';
 import ItemProduct from 'components/ItemProduct';
 import Loader from 'components/Loader';
 import ListProduct from 'components/ListProduct';
+import Product from 'model/Product';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { addToShoppingCartRoutine } from 'store/shoppingCart/routines';
+import { IRootState } from 'store/rootReducer';
+import { getTotalShoppingCart } from 'store/shoppingCart/selectors';
+import Navigation from 'components/Navigation';
 
 const useStyle = makeStyles({
   listProduct: {
@@ -16,7 +23,15 @@ const useStyle = makeStyles({
   },
 });
 
-export default function HomePage() {
+type HomePageProps = {
+  totalShoppingCart: number;
+  onAddProductToShoppingCart: (product: Product) => void;
+}
+
+export const HomePage: React.FunctionComponent<HomePageProps> = ({
+  totalShoppingCart,
+  onAddProductToShoppingCart,
+}) => {
   const [page, setPage] = React.useState(1);
   const { data, error } = useSWR(['/photos', page], (url, page) => getProductsApi(page));
   const classes = useStyle();
@@ -24,14 +39,17 @@ export default function HomePage() {
   if (error) return <p>error</p>;
   if (!data) return <Loader />;
 
-  const onAddProduct = () => {} // TODO next feature
-
   return (
     <>
+      <Navigation totalShoppingCart={totalShoppingCart} />
       <div className={classes.listProduct}>
         <ListProduct>
           {data.products.map(product => (
-            <ItemProduct key={product.id} product={product} onAddProduct={onAddProduct} />
+            <ItemProduct
+              key={product.id}
+              product={product}
+              onAddProductToShoppingCart={() => onAddProductToShoppingCart(product)}
+            />
           ))}
         </ListProduct>
       </div>
@@ -46,3 +64,13 @@ export default function HomePage() {
     </>
   );
 };
+
+const mapStateToProps = (state: IRootState) => ({
+  totalShoppingCart: getTotalShoppingCart(state),
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onAddProductToShoppingCart: (product: Product) => dispatch(addToShoppingCartRoutine.request(product)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

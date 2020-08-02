@@ -9,12 +9,17 @@ const useStyle = makeStyles({
   },
 })
 
-const Navigation: React.FunctionComponent<{}> = () => {
+type NotificationProps = {
+  totalShoppingCart: number,
+}
+
+const Navigation: React.FunctionComponent<NotificationProps> = ({ totalShoppingCart }) => {
   const classes = useStyle();
 
   return (
     <Navbar className={classes.root}>
       <Navbar.Brand>Product Website</Navbar.Brand>
+      <Navbar.Text>Panier {totalShoppingCart}</Navbar.Text>
     </Navbar>
   );
 };
